@@ -24,14 +24,51 @@ var users =[
  ];
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.json(users);
-})
-    .post(function(req, res, next) {
-      console.log(req.body);
-      users.push(req.body);
-      console.log(users);
-      res.status(201);
-    });
+router.get('/', function(req, res) {
+    res.json(users);
+});
+//Create New User
+router.post('/', function(req, res) {
+    users.push(req.body);
+    console.log(users);
+    res.status(201).send("User created successfully");
+});
+//Update User
+router.put('/:id', function(req, res) {
+    var id = parseInt(req.params.id);
+    var index;
+    var hasId = false;
+    if(!isNaN(id)) {
+        for (index = 0; index < users.length; index++) {
+            if (users[index].id === id) {
+                users[index] = req.body;
+                console.log(users);
+                hasId = true;
+                res.status(200).send('User updated successfully');
+            }
+        }
+        if (!hasId) res.status(400).send('User not found');
+    }
+    else res.status(400).send('Invalid user id');
+});
+//Delete user
+router.delete('/:id', function(req, res) {
+    var id = parseInt(req.params.id);
+    var index;
+    var hasId = false;
+    if(!isNaN(id))  {
+        for(index = 0; index < users.length; index++) {
+            if(users[index].id === id) {
+                users.splice(index,1);
+                console.log(users);
+                hasId = true;
+                res.status(200).send('User deleted successfully');
+                break;
+            }
+        }
+        if(!hasId) res.status(400).send('User not found');
+    }
+    else res.status(400).send('Invalid user id');
+});
 
 module.exports = router;
