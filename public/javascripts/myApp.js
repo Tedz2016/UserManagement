@@ -23,20 +23,31 @@
     //user data factory
     .factory('userFactory', ['$http',function($http) {
         //get data from json file and save it
-        var users = [];
-        users = $http.get('/users').success(function(data){
-            users = data;
-        });
+        //var users = [];
+        //users = $http.get('/users').success(function(data){
+        //    users = data;
+        //});
         //provide data access to all controllers
         return {
             getUsers : function() {
-                return users;
+                return $http.get('/users');
             }
         };
     }])
     //User list controller
     .controller('userCtrl', function($scope,userFactory) {
-        $scope.users = userFactory.getUsers();
+        function getMyUser() {
+            userFactory.getUsers()
+                .then(function(res) {
+                    $scope.users = res.data;
+                    console.log($scope.users);
+                    //initialize pagination
+                    $scope.groupToPages();
+                    $scope.initPageNums();
+                });
+        }
+        getMyUser();
+
         $scope.deleteUser = function(item) {
             var index = $scope.users.indexOf(item);
             $scope.users.splice(index,1);
@@ -82,15 +93,22 @@
             $scope.currentPage = n;
         };
 
-        //initialize
-        $scope.groupToPages();
-        $scope.initPageNums();
+
 
     })
     //Edit User View Controller
     .controller('EdituserController', function($scope,$location,$routeParams,userFactory) {
         $scope.id = $routeParams.param;
-        $scope.users = userFactory.getUsers();
+        function getMyUser() {
+            userFactory.getUsers()
+                .then(function(res) {
+                    $scope.users = res.data;
+                    console.log($scope.users);
+                });
+        }
+        getMyUser();
+
+
         var index = 0;
         for(index; index < $scope.users.length; index++) {
             if($scope.id == $scope.users[index].id) break;
@@ -125,7 +143,14 @@
         $scope.age = '';
         $scope.error = false;
         $scope.incomplete = false;
-        $scope.users = userFactory.getUsers();
+        function getMyUser() {
+            userFactory.getUsers()
+                .then(function(res) {
+                    $scope.users = res.data;
+                    console.log($scope.users);
+                });
+        }
+        getMyUser();
         var userId = 1;
         if($scope.users.length > 0) userId = $scope.users[$scope.users.length - 1].id + 1;
         $scope.addUser = function() {
