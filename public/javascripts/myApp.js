@@ -34,6 +34,12 @@
             },
             deleteUser : function(id) {
                 return $http.delete('/users/'+id.toString());
+            },
+            updateUser : function(userdata) {
+                return $http.put('/users/'+userdata.id.toString(),userdata);
+            },
+            addUser : function(userdata) {
+                return $http.post('/users',userdata);
             }
         };
     }])
@@ -110,27 +116,30 @@
     //Edit User View Controller
     .controller('EdituserController', function($scope,$location,$routeParams,userFactory) {
         $scope.id = $routeParams.param;
+        var index = 0;
         function getMyUser() {
             userFactory.getUsers()
                 .then(function(res) {
                     $scope.users = res.data;
                     console.log($scope.users);
+                    //find user obj by id
+
+                    for(index; index < $scope.users.length; index++) {
+                        if($scope.id == $scope.users[index].id) break;
+                    }
+
+                    $scope.fName = $scope.users[index].fName;
+                    $scope.lName = $scope.users[index].lName;
+                    $scope.passw1 = $scope.users[index].passw1;
+                    $scope.passw2 = $scope.users[index].passw2;
+                    $scope.title = $scope.users[index].title;
+                    $scope.sex = $scope.users[index].sex;
+                    $scope.age = $scope.users[index].age;
                 });
         }
         getMyUser();
 
 
-        var index = 0;
-        for(index; index < $scope.users.length; index++) {
-            if($scope.id == $scope.users[index].id) break;
-        }
-        $scope.fName = $scope.users[index].fName;
-        $scope.lName = $scope.users[index].lName;
-        $scope.passw1 = $scope.users[index].passw1;
-        $scope.passw2 = $scope.users[index].passw2;
-        $scope.title = $scope.users[index].title;
-        $scope.sex = $scope.users[index].sex;
-        $scope.age = $scope.users[index].age;
 
         $scope.updateUser = function() {
             $scope.users[index].fName = $scope.fName;
@@ -140,8 +149,15 @@
             $scope.users[index].title = $scope.title;
             $scope.users[index].sex = $scope.sex;
             $scope.users[index].age = $scope.age;
+            var userdataObj =  $scope.users[index];
+            userFactory.updateUser(userdataObj)
+                .then(function(res){
+                    console.log(res);
+                    getMyUser();
+                });
             $location.path("#/user_list");
         };
+
     })
     //New User View Controller
     .controller('NewuserController', function($scope,$location,userFactory) {
@@ -165,8 +181,10 @@
         var userId = 1;
         if($scope.users.length > 0) userId = $scope.users[$scope.users.length - 1].id + 1;
         $scope.addUser = function() {
-            $scope.users.push({ id:userId,fName:$scope.fName, lName: $scope.lName,
-                title:$scope.title, sex : $scope.sex, age:$scope.age});
+           // $scope.users.push({ id:userId,fName:$scope.fName, lName: $scope.lName,
+             //   title:$scope.title, sex : $scope.sex, age:$scope.age});
+            userFactory.addUser({ id:userId,fName:$scope.fName, lName: $scope.lName,
+                   title:$scope.title, sex : $scope.sex, age:$scope.age});
             $location.path("#/user_list");
         };
         $scope.$watch('passw1',function() {$scope.test();});
