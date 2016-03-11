@@ -26,6 +26,12 @@ var users =[
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.json(users);
-});
+})
+    .post(function(req, res, next) {
+      console.log(req.body);
+      users.push(req.body);
+      console.log(users);
+      res.status(201);
+    });
 
 module.exports = router;
