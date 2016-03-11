@@ -1,0 +1,28 @@
+<div class="container">
+    <form>
+        <h3>Create New User:</h3>
+
+        <label>First Name:</label>
+        <input class="form-control" type="text" ng-model="fName"  placeholder="First Name">
+        <br>
+        <label>Last Name:</label>
+        <input class="form-control" type="text" ng-model="lName"  placeholder="Last Name">
+        <br>
+        <label>Password:</label>
+        <input class="form-control" type="password" ng-model="passw1" placeholder="Password">
+        <br>
+        <label>Repeat:</label>
+        <input class="form-control" type="password" ng-model="passw2" placeholder="Repeat Password">
+        <br>
+        <label>Title:</label>
+        <input class="form-control" type="text" ng-model="title" placeholder="Title">
+        <br>
+        <label>Sex:</label>
+        <input class="form-control" type="text" ng-model="sex" placeholder="Sex">
+        <br>
+        <label>Age:</label>
+        <input class="form-control" type="text" ng-model="age"  placeholder="Age">
+        <br>
+        <button class="btn btn-primary" ng-disabled="error || incomplete" ng-click="addUser()">&#10004; Create New User</button>
+    </form>
+</div>

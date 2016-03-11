@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-route.min.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body ng-app="myApp" ng-controller="userCtrl" class="container">
+
+<ul class="nav navbar-nav">
+    <li class="active"><a href="#/user_list">User List</a></li>
+    <li><a href="#/new_user">New User</a></li>
+</ul>
+<br>
+<br>
+
+<div ng-view></div>
+
+<script src= "javascripts/myApp.js"></script>
+</body>
+</html>
