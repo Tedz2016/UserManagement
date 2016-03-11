@@ -16,10 +16,10 @@
         </tr>
         <br>
         <br>
-        <tr ng-repeat="user in pagedItems[currentPage] | filter : searchText | orderBy : myOrderBy" >
+        <tr ng-repeat="user in users | filter : searchText | orderBy : myOrderBy" >
             <td>
                 <a  href="#/edit_user/{{user.id}}" class="btn btn-primary">&#9998; Edit</a>
-                <button class="btn btn-primary" ng-click="deleteUser(user)">Delete</button>
+                <button class="btn btn-primary" ng-click="deleteUser(user.id)">Delete</button>
             </td>
             <td>{{ user.fName }}</td>
             <td>{{ user.lName }}</td>
@@ -30,6 +30,7 @@
         </tr>
 
     </table>
+    <!--
                    <ul class="pagination">
                     <li >
                         <a ng-click="prevPage()">Prev</a>
@@ -40,5 +41,5 @@
                     <li >
                         <a ng-click="nextPage()">Next</a>
                     </li>
-                </ul>
+                </ul> -->
 </div>

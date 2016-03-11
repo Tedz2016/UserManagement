@@ -31,31 +31,42 @@
         return {
             getUsers : function() {
                 return $http.get('/users');
+            },
+            deleteUser : function(id) {
+                return $http.delete('/users/'+id.toString());
             }
         };
     }])
     //User list controller
     .controller('userCtrl', function($scope,userFactory) {
+        //Initialize users data
         function getMyUser() {
             userFactory.getUsers()
                 .then(function(res) {
                     $scope.users = res.data;
                     console.log($scope.users);
                     //initialize pagination
-                    $scope.groupToPages();
-                    $scope.initPageNums();
+                    //$scope.groupToPages();
+                    //$scope.initPageNums();
                 });
         }
         getMyUser();
 
-        $scope.deleteUser = function(item) {
-            var index = $scope.users.indexOf(item);
-            $scope.users.splice(index,1);
-            $scope.pagedItems[$scope.currentPage].splice(index % $scope.itemsPerPage,1);
+        $scope.deleteUser = function(id) {
+            //var index = $scope.users.indexOf(item);
+            //$scope.users.splice(index,1);
+            //$scope.pagedItems[$scope.currentPage].splice(index % $scope.itemsPerPage,1);
+            userFactory.deleteUser(id)
+                .then(function(res){
+                    console.log(res);
+                    getMyUser();
+                });
+
         };
         $scope.orderByMe = function(x) {
             $scope.myOrderBy = x;
         };
+        /*
         //Pagination
         $scope.itemsPerPage = 5;
         $scope.pagedItems = [];
@@ -91,7 +102,7 @@
 
         $scope.setPage = function(n) {
             $scope.currentPage = n;
-        };
+        };*/
 
 
 
