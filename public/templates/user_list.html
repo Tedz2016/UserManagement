@@ -16,7 +16,7 @@
         </tr>
         <br>
         <br>
-        <tr ng-repeat="user in users | filter : searchText | orderBy : myOrderBy" >
+        <tr dir-paginate="user in users | filter : searchText | orderBy : myOrderBy| itemsPerPage : 6" >
             <td>
                 <a  href="#/edit_user/{{user.id}}" class="btn btn-primary">&#9998; Edit</a>
                 <button class="btn btn-primary" ng-click="deleteUser(user.id)">Delete</button>
@@ -30,6 +30,7 @@
         </tr>
 
     </table>
+    <dir-pagination-controls></dir-pagination-controls>
     <!--
                    <ul class="pagination">
                     <li >

@@ -1,5 +1,5 @@
 (function(){
-    angular.module('myApp', ['ngRoute'])
+    angular.module('myApp', ['ngRoute','angularUtils.directives.dirPagination'])
         //3 views routing
     .config(['$routeProvider',
         function($routeProvider) {
@@ -22,12 +22,6 @@
         }])
     //user data factory
     .factory('userFactory', ['$http',function($http) {
-        //get data from json file and save it
-        //var users = [];
-        //users = $http.get('/users').success(function(data){
-        //    users = data;
-        //});
-        //provide data access to all controllers
         return {
             getUsers : function() {
                 return $http.get('/users');
@@ -109,8 +103,6 @@
         $scope.setPage = function(n) {
             $scope.currentPage = n;
         };*/
-
-
 
     })
     //Edit User View Controller
@@ -210,4 +202,3 @@
         };
     });
 })();
-
