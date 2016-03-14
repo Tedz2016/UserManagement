@@ -41,6 +41,7 @@ router.put('/:id', function(req, res) {
     if(!isNaN(id)) {
         for (index = 0; index < users.length; index++) {
             if (users[index].id === id) {
+              //
                 users[index] = req.body;
                 console.log(users);
                 hasId = true;
@@ -70,5 +71,15 @@ router.delete('/:id', function(req, res) {
     }
     else res.status(400).send('Invalid user id');
 });
+
+//GET single user
+router.get('/:id', function(req, res) {
+    var id = parseInt(req.params.id);
+    var index;
+    for(index = 0; index < users.length; index++) {
+      if(users[index].id === id) res.json(users[index]);
+    }
+})
+
 
 module.exports = router;
