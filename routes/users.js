@@ -41,7 +41,7 @@ router.put('/:id', function(req, res) {
     if(!isNaN(id)) {
         for (index = 0; index < users.length; index++) {
             if (users[index].id === id) {
-              //
+              //should change only specified attributes
                 users[index] = req.body;
                 console.log(users);
                 hasId = true;
@@ -74,12 +74,22 @@ router.delete('/:id', function(req, res) {
 
 //GET single user
 router.get('/:id', function(req, res) {
-    var id = parseInt(req.params.id);
-    var index;
-    for(index = 0; index < users.length; index++) {
-      if(users[index].id === id) res.json(users[index]);
-    }
-})
+  var id = parseInt(req.params.id);
+  var index;
+  var hasId = false;
+  if(!isNaN(id))  {
+      for(index = 0; index < users.length; index++) {
+          if(users[index].id === id) {
+              hasId = true;
+              res.json(users[index]);
+              break;
+          }
+      }
+      if(!hasId) res.status(400).send('User not found');
+  }
+  else res.status(400).send('Invalid user id');
+});
+
 
 
 module.exports = router;
