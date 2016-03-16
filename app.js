@@ -8,7 +8,16 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+//Use MongoDB and mongoose
+var User     = require('./models/user');
+
+var mongoose   = require('mongoose');
+
+
 var app = express();
+
+//connect to db using mongo url
+mongoose.connect('mongodb://<user>:<pass>@jello.modulusmongo.net:27017/Y5tonumu');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
