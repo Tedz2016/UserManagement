@@ -18,8 +18,8 @@
         <br>
         <tr dir-paginate="user in users | filter : searchText | orderBy : myOrderBy| itemsPerPage : 6" >
             <td>
-                <a  href="#/edit_user/{{user.id}}" class="btn btn-primary">&#9998; Edit</a>
-                <button class="btn btn-primary" ng-click="deleteUser(user.id)">Delete</button>
+                <a  href="#/edit_user/{{user._id}}" class="btn btn-primary">&#9998; Edit</a>
+                <button class="btn btn-primary" ng-click="deleteUser(user._id)">Delete</button>
             </td>
             <td>{{ user.fName }}</td>
             <td>{{ user.lName }}</td>

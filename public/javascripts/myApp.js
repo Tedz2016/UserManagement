@@ -30,7 +30,7 @@
                 return $http.delete('/users/'+id.toString());
             },
             updateUser : function(userdata) {
-                return $http.put('/users/'+userdata.id.toString(),userdata);
+                return $http.put('/users/'+userdata._id.toString(),userdata);
             },
             addUser : function(userdata) {
                 return $http.post('/users',userdata);
@@ -45,9 +45,6 @@
                 .then(function(res) {
                     $scope.users = res.data;
                     console.log($scope.users);
-                    //initialize pagination
-                    //$scope.groupToPages();
-                    //$scope.initPageNums();
                 });
         }
         getMyUser();
@@ -66,43 +63,6 @@
         $scope.orderByMe = function(x) {
             $scope.myOrderBy = x;
         };
-        /*
-        //Pagination
-        $scope.itemsPerPage = 5;
-        $scope.pagedItems = [];
-        $scope.currentPage = 0;
-        $scope.pageNum = 0;
-        $scope.pageNums = [];
-        $scope.groupToPages = function () {
-            $scope.pagedItems = [];
-
-            for (var i = 0; i < $scope.users.length; i++) {
-                if (i % $scope.itemsPerPage === 0) {
-                    $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)] = [ $scope.users[i] ];
-                } else {
-                    $scope.pagedItems[Math.floor(i / $scope.itemsPerPage)].push($scope.users[i]);
-                }
-                $scope.pageNum = $scope.pagedItems.length;
-            }
-        };
-        $scope.initPageNums = function() {
-            for(var i = 0; i < $scope.pageNum; i++) $scope.pageNums.push(i);
-        };
-        $scope.prevPage = function () {
-            if ($scope.currentPage > 0) {
-                $scope.currentPage--;
-            }
-        };
-
-        $scope.nextPage = function () {
-            if ($scope.currentPage < $scope.pagedItems.length - 1) {
-                $scope.currentPage++;
-            }
-        };
-
-        $scope.setPage = function(n) {
-            $scope.currentPage = n;
-        };*/
 
     })
     //Edit User View Controller
@@ -113,11 +73,11 @@
             userFactory.getUsers()
                 .then(function(res) {
                     $scope.users = res.data;
-                    console.log($scope.users);
+                    //console.log($scope.users);
                     //find user obj by id
 
                     for(index; index < $scope.users.length; index++) {
-                        if($scope.id == $scope.users[index].id) break;
+                        if($scope.id == $scope.users[index]._id) break;
                     }
 
                     $scope.fName = $scope.users[index].fName;
@@ -131,8 +91,6 @@
         }
         getMyUser();
 
-
-
         $scope.updateUser = function() {
             $scope.users[index].fName = $scope.fName;
             $scope.users[index].lName = $scope.lName;
@@ -145,9 +103,10 @@
             userFactory.updateUser(userdataObj)
                 .then(function(res){
                     console.log(res);
-                    getMyUser();
+                    //getMyUser();
+                    $location.path("#/user_list");
                 });
-            $location.path("#/user_list");
+
         };
 
     })
@@ -170,14 +129,14 @@
                 });
         }
         getMyUser();
-        var userId = 1;
-        if($scope.users.length > 0) userId = $scope.users[$scope.users.length - 1].id + 1;
+
         $scope.addUser = function() {
-           // $scope.users.push({ id:userId,fName:$scope.fName, lName: $scope.lName,
-             //   title:$scope.title, sex : $scope.sex, age:$scope.age});
-            userFactory.addUser({ id:userId,fName:$scope.fName, lName: $scope.lName,
-                   title:$scope.title, sex : $scope.sex, age:$scope.age});
-            $location.path("#/user_list");
+            userFactory.addUser({fName:$scope.fName, lName: $scope.lName,
+                   title:$scope.title, sex : $scope.sex, age:$scope.age})
+                .then(function(res){
+                    $location.path("#/user_list");
+                });
+
         };
         $scope.$watch('passw1',function() {$scope.test();});
         $scope.$watch('passw2',function() {$scope.test();});

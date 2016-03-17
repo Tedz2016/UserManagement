@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
-
+var mongoose = require('mongoose');
+var User     = require('./../models/user');
 
 var users =[
   {"id":1, "fName":"Hege", "lName":"Pege", "title":"Writer","sex":"Female","age":"20"},
@@ -25,17 +26,39 @@ var users =[
 
 /* GET users listing. */
 router.get('/', function(req, res) {
-    res.json(users);
+    //res.json(users);
+    User.find(function(err,Users) {
+       if(err) res.send(err);
+       else res.json(Users);
+    });
 });
 //Create New User
 router.post('/', function(req, res) {
-    users.push(req.body);
-    console.log(users);
-    res.status(201).send("User created successfully");
+   // users.push(req.body);
+   // console.log(users);
+   // res.status(201).send("User created successfully");
+    var user = new User(req.body);
+    user.save(function(err){
+        if(err) res.send(err);
+        else res.json({message: 'user created!'});
+    });
 });
 //Update User
 router.put('/:id', function(req, res) {
-    var id = parseInt(req.params.id);
+   User.findById(req.params.id, function(err, user) {
+       if(err) res.send(err);
+       user.fName = req.body.fName || user.fName;
+       user.lName = req.body.lName || user.lName;
+       user.title = req.body.title || user.title;
+       user.sex = req.body.sex || user.sex;
+       user.age = req.body.age || user.age;
+       user.save(function(err) {
+           if(err) res.send(err);
+           res.json({message : 'User updated!'});
+       })
+
+   });
+   /* var id = parseInt(req.params.id);
     var index;
     var hasId = false;
     if(!isNaN(id)) {
@@ -50,44 +73,24 @@ router.put('/:id', function(req, res) {
         }
         if (!hasId) res.status(400).send('User not found');
     }
-    else res.status(400).send('Invalid user id');
+    else res.status(400).send('Invalid user id');*/
 });
 //Delete user
 router.delete('/:id', function(req, res) {
-    var id = parseInt(req.params.id);
-    var index;
-    var hasId = false;
-    if(!isNaN(id))  {
-        for(index = 0; index < users.length; index++) {
-            if(users[index].id === id) {
-                users.splice(index,1);
-                console.log(users);
-                hasId = true;
-                res.status(200).send('User deleted successfully');
-                break;
-            }
-        }
-        if(!hasId) res.status(400).send('User not found');
-    }
-    else res.status(400).send('Invalid user id');
+    User.remove({
+        _id : req.params.id
+    }, function(err, user) {
+        if (err) res.send(err);
+        res.json({message:"User deleted!"});
+    });
 });
 
 //GET single user
 router.get('/:id', function(req, res) {
-  var id = parseInt(req.params.id);
-  var index;
-  var hasId = false;
-  if(!isNaN(id))  {
-      for(index = 0; index < users.length; index++) {
-          if(users[index].id === id) {
-              hasId = true;
-              res.json(users[index]);
-              break;
-          }
-      }
-      if(!hasId) res.status(400).send('User not found');
-  }
-  else res.status(400).send('Invalid user id');
+    User.findById(req.params.id, function(err, user) {
+        if(err) res.send(err);
+        res.json(user);
+    });
 });
 
 
